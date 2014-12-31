@@ -6,6 +6,7 @@ def handle_false(value):
         value = False
     return value
 
+DEBUG = handle_false(os.environ.get('DEBUG', False))
 USE_RELOADER = handle_false(os.environ.get('USE_RELOADER', False))
 PORT = int(os.environ.get('PORT', 5000))
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URI']
