@@ -1,4 +1,7 @@
 from flask import Flask
+
+from models import Patient
+
 app = Flask(__name__)
 
 
