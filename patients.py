@@ -1,9 +1,12 @@
 from flask import Flask
-
-from models import Patient
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config.from_object('config')
+db = SQLAlchemy(app)
 
+# Must come after db initialization, as it uses that
+from models import Patient, Question
 
 @app.route('/patient', methods=['POST', 'GET'])
 def patient():

@@ -1,3 +1,5 @@
+import os
+
 def handle_false(value):
     """Ensure that false in config isn't interpreted as True."""
     if value and value.lower() == 'false':
