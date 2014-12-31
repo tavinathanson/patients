@@ -12,13 +12,22 @@ db = SQLAlchemy(app)
 from models import Patient, Question, Answer
 
 
+def register_api(view, endpoint, url, pk='id', pk_type='int'):
+    view_func = view.as_view(endpoint)
+    app.add_url_rule(url, defaults={pk: None},
+                     view_func=view_func, methods=['GET'])
+    app.add_url_rule(url, view_func=view_func, methods=['POST'])
+    app.add_url_rule('%s<%s:%s>' % (url, pk_type, pk),
+                     view_func=view_func,
+                     methods=['GET', 'PUT', 'DELETE'])
+
+
 class PatientAPI(MethodView):
     def get(self):
         return None
 
-    
-patient_view = PatientAPI.as_view('patient_api')
-app.add_url_rule('/patient', view_func=patient_view)
+
+register_api(PatientAPI, 'patient_api', '/patient')
 
 
 class QuestionAPI(MethodView):
@@ -35,8 +44,7 @@ class QuestionAPI(MethodView):
         return success_response()
 
 
-question_view = QuestionAPI.as_view('question_api')
-app.add_url_rule('/question', methods=['POST'], view_func=question_view)
+register_api(QuestionAPI, 'question_api', '/question')
 
 
 class AnswerAPI(MethodView):
@@ -50,8 +58,7 @@ class AnswerAPI(MethodView):
         return success_response()
 
 
-answer_view = AnswerAPI.as_view('answer_api')
-app.add_url_rule('/answer', methods=['POST'], view_func=answer_view)
+register_api(AnswerAPI, 'answer_api', '/answer')
 
 
 def success_response():
